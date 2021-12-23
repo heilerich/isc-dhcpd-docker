@@ -5,16 +5,16 @@ on:
   schedule:
     - cron: '0 10 * * *' # everyday at 10am
 
-strategy:
-  matrix:
-    include:
-      - version: 4.4.2-P1
-        tag: stable
-      - version: 4.1-ESV-R16-P1
-        tag: esv
-
 jobs:
   docker:
+    strategy:
+      matrix:
+        include:
+          - version: 4.4.2-P1
+            tag: stable
+          - version: 4.1-ESV-R16-P1
+            tag: esv
+
     runs-on: ubuntu-latest
     steps:
       -
