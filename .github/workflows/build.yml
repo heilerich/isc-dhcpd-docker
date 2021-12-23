@@ -12,12 +12,15 @@ jobs:
         platform:
           - linux/amd64
           - linux/arm64
+        version:
+          - 4.4.2-P1
+          - 4.1-ESV-R16-P1
         include:
           - version: 4.4.2-P1
             semver: 4.4.2
             tag: stable
           - version: 4.1-ESV-R16-P1
-            semver: 4.1
+            semver: 4.1.0
             tag: esv
 
     runs-on: ubuntu-latest
