@@ -1,6 +1,7 @@
-ARG DHCPD_VERSION
 
 FROM ubuntu:latest AS builder
+
+ARG DHCPD_VERSION
 
 WORKDIR /build
 

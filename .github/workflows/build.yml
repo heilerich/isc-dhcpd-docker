@@ -9,10 +9,15 @@ jobs:
   docker:
     strategy:
       matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
         include:
           - version: 4.4.2-P1
+            semver: 4.4.2
             tag: stable
           - version: 4.1-ESV-R16-P1
+            semver: 4.1
             tag: esv
 
     runs-on: ubuntu-latest
@@ -31,9 +36,10 @@ jobs:
           # generate Docker tags based on the following events/attributes
           tags: |
             type=raw,value=${{ matrix.tag }}
-            type=semver,enable=true,value=v${{ matrix.version }},pattern={{version}}
-            type=semver,enable=true,value=v${{ matrix.version }},pattern={{major}}.{{minor}}
-            type=semver,enable=true,value=v${{ matrix.version }},pattern={{major}}
+            type=raw,value=${{ matrix.version }}
+            type=semver,enable=true,value=v${{ matrix.semver }},pattern={{version}}
+            type=semver,enable=true,value=v${{ matrix.semver }},pattern={{major}}.{{minor}}
+            type=semver,enable=true,value=v${{ matrix.semver }},pattern={{major}}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -52,7 +58,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          push: true
+          platforms: ${{ matrix.platform }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
