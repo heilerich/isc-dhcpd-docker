@@ -3,7 +3,7 @@ name: build
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: '0 10 * * *' # everyday at 10am
+    - cron: '44 0 * * 1' # At 00:44 on Monday
 
 jobs:
   docker:
@@ -12,6 +12,9 @@ jobs:
         platform:
           - linux/amd64
           - linux/arm64
+          - linux/mips64
+          - linux/arm/v7
+          - linux/arm/v6
         version:
           - 4.4.2-P1
           - 4.1-ESV-R16-P1
@@ -36,7 +39,8 @@ jobs:
           # list of Docker images to use as base name for tags
           images: |
             ghcr.io/heilerich/isc-dhcpd
-          # generate Docker tags based on the following events/attributes
+          flavor: |
+            latest=${{ matrix.tag == "stable" }}
           tags: |
             type=raw,value=${{ matrix.tag }}
             type=raw,value=${{ matrix.version }}
