@@ -9,10 +9,6 @@ jobs:
   docker:
     strategy:
       matrix:
-        platform:
-          - linux/amd64
-          - linux/arm64
-          - linux/arm/v7
         version:
           - 4.4.2-P1
           - 4.1-ESV-R16-P1
@@ -21,7 +17,6 @@ jobs:
             semver: 4.4.2
             tag: stable
           - version: 4.1-ESV-R16-P1
-            semver: 4.1.0
             tag: esv
 
     runs-on: ubuntu-latest
@@ -64,7 +59,7 @@ jobs:
         with:
           context: .
           push: true
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
