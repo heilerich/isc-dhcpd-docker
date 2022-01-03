@@ -12,9 +12,7 @@ jobs:
         platform:
           - linux/amd64
           - linux/arm64
-          - linux/mips64
           - linux/arm/v7
-          - linux/arm/v6
         version:
           - 4.4.2-P1
           - 4.1-ESV-R16-P1
