@@ -21,7 +21,7 @@ corresponding Major, Major.Minor and Major.Minor.Patch versions.
 
 ## Example
 
-This provides
+This provides DHCP on the default docker network
 
 dhcpd.conf
 ```
