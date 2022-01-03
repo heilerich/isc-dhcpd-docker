@@ -40,7 +40,7 @@ jobs:
           images: |
             ghcr.io/heilerich/isc-dhcpd
           flavor: |
-            latest=${{ matrix.tag == "stable" }}
+            latest=${{ matrix.tag == 'stable' }}
           tags: |
             type=raw,value=${{ matrix.tag }}
             type=raw,value=${{ matrix.version }}
