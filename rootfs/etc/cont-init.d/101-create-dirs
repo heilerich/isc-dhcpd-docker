@@ -1,0 +1,5 @@
+#!/usr/bin/execlineb
+if { s6-mkdir -p -v -m 0750 /var/dhcpd/run }
+if { s6-mkdir -p -v -m 0750 /var/dhcpd/db }
+if { s6-touch /var/dhcpd/db/dhcpd.leases }
+pipeline { s6-echo "/var/dhcpd true daemon 0641 0750" } fix-attrs

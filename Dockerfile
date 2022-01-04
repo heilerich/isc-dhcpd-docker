@@ -1,4 +1,3 @@
-
 FROM ubuntu:latest AS builder
 
 ARG DHCPD_VERSION
@@ -16,21 +15,25 @@ RUN cd /build/* && \
   make && \
   make DESTDIR=/dist install
 
-RUN mkdir -p /dest /dest/var/run /dest/var/db /dest/etc \
+RUN mkdir -p /dest /dest/etc \
   && cp /dist/usr/local/sbin/dhcpd /dest \
   && cp /dist/usr/local/etc/dhcpd.conf.example /dest/etc/dhcpd.conf \
-  && touch /dest/var/db/dhcpd.leases \
   && setcap 'cap_net_raw,cap_net_bind_service=+eip' /dest/dhcpd
 
+ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /s6.tar.gz
+RUN tar xzf /s6.tar.gz -C /dest
+
+ADD https://github.com/just-containers/socklog-overlay/releases/download/v3.1.2-0/socklog-overlay-amd64.tar.gz /socklog.tar.gz
+RUN tar xzf /socklog.tar.gz -C /dest
+
+COPY ./rootfs /dest
 
 FROM scratch
 
 VOLUME /var
 
-COPY --from=builder --chown=1000:1000 /dest /
+COPY --from=builder --chown=root:root /dest /
 
-USER 1000:1000
+ENV S6_READ_ONLY_ROOT=1
 
-ENTRYPOINT ["/dhcpd"]
-
-CMD ["-d"]
+ENTRYPOINT ["/init"]

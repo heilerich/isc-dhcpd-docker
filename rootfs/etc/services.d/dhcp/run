@@ -1,0 +1,4 @@
+#!/usr/bin/execlineb -P
+
+s6-setuidgid daemon
+/dhcpd -f -q -pf /var/dhcpd/run/dhcpd.pid -lf /var/dhcpd/db/dhcpd.leases
